@@ -14,11 +14,11 @@ read_line_lp:
     je      read_line_lp_quit   ; quit loop if EOF
     cmp     al, 10
     je      read_line_lp_quit
-    cmp     al, '0'             ; check the first character is a digit
+    cmp     al, '0'             ; check the character is a digit
     jl      if_digit_quit
     cmp     al, '9'
     jg      if_digit_quit
-    lea     eax, [eax - 0x30]   ; if the first character is a digit, use lea instruction to calculate corresponding digit value
+    lea     eax, [eax - 0x30]   ; if the character is a digit, use lea instruction to calculate corresponding digit value
     add     [digits_sum], eax
 if_digit_quit:
     jmp     read_line_lp        ; read next char
