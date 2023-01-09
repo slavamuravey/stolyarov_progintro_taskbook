@@ -1,3 +1,6 @@
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+mkfile_dir := $(dir $(mkfile_path))
+
 all: clean main
 	@./main
 
@@ -20,7 +23,7 @@ main_debug.o: main.asm
 .PHONY: debug
 debug: main_debug
 	@echo "+ $@"
-	gdb -x main.gdb
+	gdb -x $(mkfile_dir)/main.gdb
 
 .PHONY: clean
 clean: clean_main clean_main_debug
