@@ -21,6 +21,11 @@ main_debug.o: main.asm
 	@echo "+ $@"
 	@nasm -g -felf main.asm -o main_debug.o
 
+.PHONY: preprocess
+preprocess:
+	@echo "+ $@"
+	@nasm -e main.asm
+
 .PHONY: debug
 debug: main_debug
 	@echo "+ $@"
