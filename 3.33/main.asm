@@ -99,12 +99,6 @@ main:
     mov     eax, [esp]
     mov     [argc], eax
  
-    ; mov     eax, [esp + 8]
-    ; mov     [arg1], eax
-
-    ; mov     eax, [esp + 12]
-    ; mov     [arg2], eax
-
     mov     ecx, [argc]
     cmp     ecx, 3                              ; cmd name + 2 args
     jne     if_args_count_ok_else
