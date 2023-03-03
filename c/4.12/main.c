@@ -33,14 +33,13 @@ int main(int argc, char **argv)
     }
 
     const char *substr = argv[1];
-    const unsigned long int substr_len = argv[2] - substr - 1;
 
     for (int i = 2; i < argc; i++) {
         unsigned long int matches_count = 0;
         const char *str = argv[i];
 
         while ((str = my_strstr(str, substr))) {
-            str += substr_len;
+            str++;
             matches_count++;
         }
 
