@@ -6,7 +6,7 @@ int main()
     int is_word = 0;
 
     while ((c = getchar()) != EOF) {
-        if (c == ' ' || c == '\n') {
+        if (c == ' ' || c == '\t' || c == '\n') {
             if (is_word == 1) {
                 putchar(')');
             }
