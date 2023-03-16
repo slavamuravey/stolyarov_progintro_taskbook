@@ -51,7 +51,6 @@ int main(int argc, char **argv)
             is_word = 1;
         }
 
-
         if (c == '\n') {
             while (first) {
                 printf("%s ", first->str);
