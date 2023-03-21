@@ -11,7 +11,7 @@ int main(int argc, char **argv)
         "Could not make Humpty Dumpty where he was before.\n"
     ;
 
-    if (argc != 2) {
+    if (argc < 2) {
         fprintf(stderr, "Too few arguments.\n");
         exit(1);
     }
