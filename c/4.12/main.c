@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-char* my_strstr(const char *haystack, const char *needle)
+const char* my_strstr(const char *haystack, const char *needle)
 {
     while (*haystack) {
         const char *haystack_current = haystack; 
@@ -15,7 +15,7 @@ char* my_strstr(const char *haystack, const char *needle)
         }
 
         if (!*needle_current) {
-            return (char *)haystack;
+            return haystack_current;
         }
 
         haystack++;
