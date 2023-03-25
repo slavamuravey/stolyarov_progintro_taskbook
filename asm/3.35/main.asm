@@ -82,7 +82,7 @@ if_new_max_len_arg_quit:
     int     0x80
 lp_quit:
 
- quit:
+quit:
     mov     eax, 1
     mov     ebx, 0
     int     0x80
