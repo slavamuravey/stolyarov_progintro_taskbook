@@ -4,10 +4,9 @@
 
 int main(int argc, char **argv)
 {
-    size_t buffer_size = 1024;
-    char buffer[buffer_size];
+    char buffer[1024];
     ssize_t count;
-    while ((count = read(STDIN_FILENO, buffer, buffer_size)) != 0) {
+    while ((count = read(STDIN_FILENO, buffer, sizeof(buffer)))) {
         write(STDOUT_FILENO, buffer, count);
     }
 

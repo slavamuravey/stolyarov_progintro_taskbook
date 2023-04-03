@@ -10,12 +10,12 @@ ssize_t my_getline(char **line, size_t *buffer, FILE *stream)
     int read_chars = 0;
     while ((c = fgetc(stream)) != EOF) {
         read_chars++;
-        if (read_chars > *buffer) {
+        if (read_chars > *buffer - 1) {
             *buffer *= 2;
             *line = realloc(*line, *buffer);
             if (*line == NULL) {
                 perror("realloc");
-                return EOF;
+                exit(EXIT_FAILURE);
             }
         }
         (*line)[read_chars - 1] = c;
