@@ -1,0 +1,4 @@
+q.bin total numbers: 7, min number: 1, max number: 7
+w.bin total numbers: 3, min number: 12, max number: 345
+e.bin total numbers: 2, min number: 32, max number: 67
+r.bin total numbers: 2, min number: -23, max number: 12
