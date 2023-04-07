@@ -7,13 +7,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-int is_regular_file(const char *path)
-{
-    struct stat path_stat;
-    stat(path, &path_stat);
-    return S_ISREG(path_stat.st_mode);
-}
-
 void print_dir_file_recursive(const char *dirname, const char *filename)
 {
     DIR *dir = opendir(dirname);
