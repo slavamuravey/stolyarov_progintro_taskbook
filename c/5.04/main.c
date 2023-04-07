@@ -13,6 +13,10 @@ int main(int argc, char **argv)
     char *filename = argv[1];
 
     int fd = open(filename, O_RDONLY);
+    if (fd == -1) {
+        perror(filename);
+        exit(EXIT_FAILURE);
+    }
 
     char buf[4096];
 
