@@ -2,6 +2,7 @@
     "files.associations": {
         "unistd.h": "c",
         "fcntl.h": "c",
-        "cstdio": "c"
+        "cstdio": "c",
+        "errno.h": "c"
     }
 }
