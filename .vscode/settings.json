@@ -3,6 +3,7 @@
         "unistd.h": "c",
         "fcntl.h": "c",
         "cstdio": "c",
-        "errno.h": "c"
+        "errno.h": "c",
+        "string.h": "c"
     }
 }
