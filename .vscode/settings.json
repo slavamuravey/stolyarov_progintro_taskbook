@@ -5,6 +5,7 @@
         "cstdio": "c",
         "errno.h": "c",
         "string.h": "c",
-        "cerrno": "c"
+        "cerrno": "c",
+        "in.h": "c"
     }
 }
