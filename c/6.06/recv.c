@@ -41,7 +41,8 @@ int main(int argc, char **argv)
 
     char buf[508];
     memset(buf, 0, sizeof(buf));
-    if (recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *)&addr_from, &addr_from_len) == -1) {
+    int byte_count;
+    if ((byte_count = recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *)&addr_from, &addr_from_len)) == -1) {
         perror("recvfrom");
         exit(1);
     }
@@ -51,7 +52,7 @@ int main(int argc, char **argv)
     printf("family: %d, ip: %s, port: %d, len: %d\n", addr_from.sin_family, ip_str, addr_from.sin_port, addr_from_len);
 
     int i;
-    for (i = 0; i < sizeof(buf); i++) {
+    for (i = 0; i < byte_count; i++) {
         char c = buf[i];
         if (c < 32 || c > 126 || c == '\n' || c == '\t') {
             c = '?';
