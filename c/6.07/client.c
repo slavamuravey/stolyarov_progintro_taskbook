@@ -9,6 +9,8 @@
 #include <arpa/inet.h>
 #include <errno.h>
 
+volatile static sig_atomic_t sock;
+
 void sigalrm_handler(int s)
 {
     signal(SIGALRM, sigalrm_handler);
@@ -18,6 +20,7 @@ void sigalrm_handler(int s)
     write(STDOUT_FILENO, time_out_msg, strlen(time_out_msg));
     errno = save_errno;
 
+    close(sock);
     exit(0);
 }
 
@@ -34,8 +37,8 @@ int main(int argc, char **argv)
     
     struct sockaddr_in addr_to;
     memset(&addr_to, 0, sizeof(addr_to));
-    int s = socket(AF_INET, SOCK_DGRAM, 0);
-    if (s == -1) {
+    sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock == -1) {
         perror("socket");
         exit(1);
     }
@@ -44,8 +47,9 @@ int main(int argc, char **argv)
     addr_to.sin_addr.s_addr = inet_addr(ip);
     addr_to.sin_port = htons(port);
 
-    if (sendto(s, msg, strlen(msg), 0, (struct sockaddr *)&addr_to, sizeof(addr_to)) == -1) {
+    if (sendto(sock, msg, strlen(msg), 0, (struct sockaddr *)&addr_to, sizeof(addr_to)) == -1) {
         perror("sendto");
+        close(sock);
         exit(1);
     }
 
@@ -55,12 +59,14 @@ int main(int argc, char **argv)
     memset(buf, 0, sizeof(buf));
 
     alarm(1);
-    if (read(s, buf, sizeof(buf)) == -1) {
-        perror("recvfrom");
+    if (read(sock, buf, sizeof(buf)) == -1) {
+        perror("read");
+        close(sock);
         exit(1);
     }
 
     printf("%s\n", buf);
+    close(sock);
     
     return 0;
 }

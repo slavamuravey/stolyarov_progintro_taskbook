@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <errno.h>
 
 int main(int argc, char **argv) 
 {
@@ -20,7 +21,7 @@ int main(int argc, char **argv)
     
     struct sockaddr_in addr_to;
     memset(&addr_to, 0, sizeof(addr_to));
-    int s = socket(AF_INET, SOCK_DGRAM, 0);
+    int s = socket(AF_INET, SOCK_STREAM, 0);
     if (s == -1) {
         perror("socket");
         exit(1);
@@ -30,11 +31,32 @@ int main(int argc, char **argv)
     addr_to.sin_addr.s_addr = inet_addr(ip);
     addr_to.sin_port = htons(port);
 
-    if (sendto(s, msg, strlen(msg), 0, (struct sockaddr *)&addr_to, sizeof(addr_to)) == -1) {
-        perror("sendto");
+    if (connect(s, (struct sockaddr *)&addr_to, sizeof(addr_to)) == -1) {
+        perror("connect");
         close(s);
         exit(1);
     }
+
+    if (write(s, msg, strlen(msg)) == -1) {
+        perror("write");
+        close(s);
+        exit(1);
+    }
+
+    char buf[508];
+    memset(buf, 0, sizeof(buf));
+
+    if (read(s, buf, sizeof(buf)) == -1) {
+        perror("read");
+        close(s);
+        exit(1);
+    }
+
+    printf("%s\n", buf);
+
+    shutdown(s, SHUT_RDWR);
+
+    close(s);
     
     return 0;
 }

@@ -69,6 +69,7 @@ int main(int argc, char **argv)
 
     if (bind(s, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
         perror("bind");
+        close(s);
         exit(1);
     }
 
@@ -91,6 +92,7 @@ int main(int argc, char **argv)
         int byte_count;
         if ((byte_count = recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *)&addr_from, &addr_from_len)) == -1) {
             syslog(LOG_ERR, "recvfrom: %s", strerror(errno));
+            close(s);
             exit(1);
         }
         bytes_received += byte_count;
@@ -100,11 +102,13 @@ int main(int argc, char **argv)
         sprintf(msg, "bytes received: %d, dgrams count: %d\n", bytes_received, dgrams_count);
         if (sendto(s, msg, strlen(msg), 0, (struct sockaddr *)&addr_from, sizeof(addr_from)) == -1) {
             syslog(LOG_ERR, "sendto: %s", strerror(errno));
+            close(s);
             exit(1);
         }
     }
 
     closelog();
+    close(s);
 
     return 0;
 }

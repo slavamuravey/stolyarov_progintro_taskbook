@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 
     if (bind(s, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
         perror("bind");
+        close(s);
         exit(1);
     }
 
@@ -44,12 +45,13 @@ int main(int argc, char **argv)
     int byte_count;
     if ((byte_count = recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr *)&addr_from, &addr_from_len)) == -1) {
         perror("recvfrom");
+        close(s);
         exit(1);
     }
 
     char ip_str[INET_ADDRSTRLEN];
     inet_ntop(AF_INET, &(addr_from.sin_addr), ip_str, INET_ADDRSTRLEN);
-    printf("family: %d, ip: %s, port: %d, len: %d\n", addr_from.sin_family, ip_str, addr_from.sin_port, addr_from_len);
+    printf("family: %d, ip: %s, port: %d, len: %d\n", addr_from.sin_family, ip_str, ntohs(addr_from.sin_port), addr_from_len);
 
     int i;
     for (i = 0; i < byte_count; i++) {
