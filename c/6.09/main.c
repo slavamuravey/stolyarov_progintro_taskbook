@@ -16,6 +16,7 @@ int main(int argc, char **argv)
 
     struct timeval timeout;
     timeout.tv_sec = 15;
+    timeout.tv_usec = 0;
 
     int sr = select(max_d + 1, &readfds, NULL, NULL, &timeout);
     if (sr == -1) {
