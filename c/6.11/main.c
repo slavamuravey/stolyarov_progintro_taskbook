@@ -5,18 +5,6 @@
 #include <sys/select.h>
 #include <fcntl.h>
 
-int has_eol(const char *buf, size_t len)
-{
-    int i;
-    for (i = 0; i < len; i++) {
-        if (buf[i] == '\n') {
-            return 1;
-        }
-    }
-
-    return 0;
-}
-
 int main(int argc, char **argv)
 {
     if (argc < 3) {
@@ -38,20 +26,21 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    /* int fcntl_result;
-    fcntl_result = fcntl(r_fd, F_GETFL);
+    int fcntl_result;
+    fcntl_result = fcntl(STDIN_FILENO, F_GETFL);
     if (fcntl_result == -1) {
         perror("fcntl");
         exit(1);
     }
     
-    fcntl_result = fcntl(r_fd, F_SETFL, fcntl_result ^ O_NONBLOCK);
+    fcntl_result = fcntl(STDIN_FILENO, F_SETFL, fcntl_result | O_NONBLOCK);
     if (fcntl_result == -1) {
         perror("fcntl");
         exit(1);
-    } */
+    }
     
-    printf("connected\n");
+    printf("Connection established.\n");
+    fflush(stdout);
 
     int max_d = r_fd;
     
@@ -77,6 +66,9 @@ int main(int argc, char **argv)
                 while (1) {
                     count = read(STDIN_FILENO, buf, sizeof(buf));
                     if (count == -1) {
+                        if (errno == EAGAIN) {
+                            break;
+                        }
                         perror("read");
                         exit(1);
                     }
@@ -85,10 +77,6 @@ int main(int argc, char **argv)
                         exit(0);
                     } else {
                         write(w_fd, buf, count);
-
-                        if (has_eol(buf, count)) {
-                            break;
-                        }
                     }
                 }
             }
@@ -96,6 +84,9 @@ int main(int argc, char **argv)
                 while (1) {
                     count = read(r_fd, buf, sizeof(buf));
                     if (count == -1) {
+                        if (errno == EAGAIN) {
+                            break;
+                        }
                         perror("read");
                         exit(1);
                     }
@@ -105,10 +96,6 @@ int main(int argc, char **argv)
                         exit(0);
                     } else {
                         write(STDIN_FILENO, buf, count);
-
-                        if (has_eol(buf, count)) {
-                            break;
-                        }
                     }
                 }
             }
