@@ -7,6 +7,9 @@
         "string.h": "c",
         "cerrno": "c",
         "in.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "uintn-identity.h": "c",
+        "signal.h": "c",
+        "select.h": "c"
     }
 }

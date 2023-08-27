@@ -34,7 +34,7 @@ int main(int argc, char **argv)
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
     addr.sin_port = htons(port);
 
-    int opt;
+    int opt = 1;
     setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
     if (bind(s, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
