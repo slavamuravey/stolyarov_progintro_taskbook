@@ -129,39 +129,34 @@ int main(int argc, char **argv)
         for (i = 0; i < cons->len; i++) {
             int con = cons->ptr[i];
             if (FD_ISSET(con, &readfds)) {
-                size_t count_total = 0;
-                size_t count;
                 char buf[4];
-                while ((count = read(con, buf, sizeof(buf))) > 0) {
-                    int j;
-                    int eol = 0;
-                    for (j = 0; j < count; j++) {
-                        if (buf[j] == '\n') {
-                            eol = 1;
-                            break;
-                        }
-                    }
-
-                    count_total += count;
-
-                    if (eol) {
-                        break;
-                    }
-                }
-
-                if (count_total == 0) {
-                    cons->ptr[i] = -1;
-                    shutdown(con, SHUT_RDWR);
-                    close(con);
-                    break;
-                }
-
-                char *response = "Ok\n";
-                if (write(con, response, strlen(response)) == -1) {
-                    perror("write");
+                size_t count = read(con, buf, sizeof(buf));
+                if (count == -1) {
+                    perror("read");
                     close(con);
                     close(ls);
                     exit(1);
+                }
+
+                if (count == 0) {
+                    cons->ptr[i] = -1;
+                    shutdown(con, SHUT_RDWR);
+                    close(con);
+                    continue;
+                }
+
+                int j;
+                for (j = 0; j < count; j++) {
+                    if (buf[j] == '\n') {
+                        char *response = "Ok\n";
+                        if (write(con, response, strlen(response)) == -1) {
+                            perror("write");
+                            close(con);
+                            close(ls);
+                            exit(1);
+                        }
+                        break;
+                    }
                 }
             }
         }
