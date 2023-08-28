@@ -46,10 +46,9 @@ int main(int argc, char **argv)
         } else if (sr == 0) {
             continue;
         } else {
-            ssize_t count;
-            char buf[4];
             if (FD_ISSET(STDIN_FILENO, &readfds)) {
-                count = read(STDIN_FILENO, buf, sizeof(buf));
+                char buf[4];
+                ssize_t count = read(STDIN_FILENO, buf, sizeof(buf));
                 if (count == -1) {
                     perror("read");
                     exit(1);
@@ -62,7 +61,8 @@ int main(int argc, char **argv)
                 }
             }
             if (FD_ISSET(r_fd, &readfds)) {
-                count = read(r_fd, buf, sizeof(buf));
+                char buf[4];
+                ssize_t count = read(r_fd, buf, sizeof(buf));
                 if (count == -1) {
                     perror("read");
                     exit(1);
