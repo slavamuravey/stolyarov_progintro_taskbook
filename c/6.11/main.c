@@ -25,22 +25,8 @@ int main(int argc, char **argv)
         perror("open");
         exit(1);
     }
-
-    int fcntl_result;
-    fcntl_result = fcntl(STDIN_FILENO, F_GETFL);
-    if (fcntl_result == -1) {
-        perror("fcntl");
-        exit(1);
-    }
-    
-    fcntl_result = fcntl(STDIN_FILENO, F_SETFL, fcntl_result | O_NONBLOCK);
-    if (fcntl_result == -1) {
-        perror("fcntl");
-        exit(1);
-    }
     
     printf("Connection established.\n");
-    fflush(stdout);
 
     int max_d = r_fd;
     
@@ -63,40 +49,30 @@ int main(int argc, char **argv)
             ssize_t count;
             char buf[4];
             if (FD_ISSET(STDIN_FILENO, &readfds)) {
-                while (1) {
-                    count = read(STDIN_FILENO, buf, sizeof(buf));
-                    if (count == -1) {
-                        if (errno == EAGAIN) {
-                            break;
-                        }
-                        perror("read");
-                        exit(1);
-                    }
+                count = read(STDIN_FILENO, buf, sizeof(buf));
+                if (count == -1) {
+                    perror("read");
+                    exit(1);
+                }
 
-                    if (count == 0) {
-                        exit(0);
-                    } else {
-                        write(w_fd, buf, count);
-                    }
+                if (count == 0) {
+                    exit(0);
+                } else {
+                    write(w_fd, buf, count);
                 }
             }
             if (FD_ISSET(r_fd, &readfds)) {
-                while (1) {
-                    count = read(r_fd, buf, sizeof(buf));
-                    if (count == -1) {
-                        if (errno == EAGAIN) {
-                            break;
-                        }
-                        perror("read");
-                        exit(1);
-                    }
+                count = read(r_fd, buf, sizeof(buf));
+                if (count == -1) {
+                    perror("read");
+                    exit(1);
+                }
 
-                    if (count == 0) {
-                        printf("Connection closed.\n");
-                        exit(0);
-                    } else {
-                        write(STDIN_FILENO, buf, count);
-                    }
+                if (count == 0) {
+                    printf("Connection closed.\n");
+                    exit(0);
+                } else {
+                    write(STDIN_FILENO, buf, count);
                 }
             }
         }
