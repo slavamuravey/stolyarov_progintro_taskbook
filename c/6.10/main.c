@@ -53,11 +53,22 @@ int main(int argc, char **argv)
             need_exit = false;
             printf("Are you sleeping?\n");
         } else {
-            int c;
-            while ((c = getchar()) != EOF) {
-                need_exit = false;
+            char buf[4];
+            size_t count = read(STDIN_FILENO, buf, sizeof(buf));
+            if (count == -1) {
+                perror("read");
+                exit(1);
+            }
+
+            if (count == 0) {
+                continue;
+            }
+            
+            need_exit = false;
+            int i;
+            for (i = 0; i < count; i++) {
                 chars_count++;
-                if (c == '\n') {
+                if (buf[i] == '\n') {
                     lines_count++;
                     break;
                 }
