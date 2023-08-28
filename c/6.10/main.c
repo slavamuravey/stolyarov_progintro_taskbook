@@ -54,7 +54,7 @@ int main(int argc, char **argv)
             printf("Are you sleeping?\n");
         } else {
             char buf[4];
-            size_t count = read(STDIN_FILENO, buf, sizeof(buf));
+            ssize_t count = read(STDIN_FILENO, buf, sizeof(buf));
             if (count == -1) {
                 perror("read");
                 exit(1);

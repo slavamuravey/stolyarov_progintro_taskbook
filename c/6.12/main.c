@@ -130,7 +130,7 @@ int main(int argc, char **argv)
             int con = cons->ptr[i];
             if (FD_ISSET(con, &readfds)) {
                 char buf[4];
-                size_t count = read(con, buf, sizeof(buf));
+                ssize_t count = read(con, buf, sizeof(buf));
                 if (count == -1) {
                     perror("read");
                     close(con);
