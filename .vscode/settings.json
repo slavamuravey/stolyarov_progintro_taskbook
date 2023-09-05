@@ -32,6 +32,7 @@
         "system_error": "c",
         "typeinfo": "c",
         "utility": "c",
-        "server.h": "c"
+        "server.h": "c",
+        "dynamic_array.h": "c"
     }
 }
