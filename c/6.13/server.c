@@ -12,8 +12,11 @@
 #include "dynamic_array.h"
 #include "server.h"
 #include "connection.h"
+#include "utils.h"
 
 #define LISTEN_BACKLOG 16
+
+ssize_t counter = 0;
 
 struct server *server_create(int domain, struct sockaddr *addr)
 {
@@ -47,6 +50,26 @@ struct server *server_create(int domain, struct sockaddr *addr)
     return srv;
 }
 
+static void server_print_info(struct server *srv)
+{
+    printf("Clients count: %ld\n", srv->connections->len);
+}
+
+static void connection_close(struct server *srv, struct connection *con)
+{
+    int i;
+    for (i = 0; i < srv->connections->len; i++) {
+        struct connection **cons = srv->connections->ptr;
+        if (cons[i] == con) {
+            dynamic_array_remove(srv->connections, i);
+        }
+    }
+    
+    shutdown(con->socket, SHUT_RDWR);
+    close(con->socket);
+    connection_destroy(con);
+}
+
 void server_run(struct server *srv)
 {
     while (1) {
@@ -58,9 +81,10 @@ void server_run(struct server *srv)
         FD_ZERO(&readfds);
         FD_SET(srv->socket, &readfds);
         max_d = srv->socket;
-        cons = srv->connections->ptr;
         for (i = 0; i < srv->connections->len; i++) {
-            struct connection *con = cons[i];
+            struct connection *con;
+            cons = srv->connections->ptr;
+            con = cons[i];
             FD_SET(con->socket, &readfds);
             if (con->socket > max_d) {
                 max_d = con->socket;
@@ -92,14 +116,38 @@ void server_run(struct server *srv)
 
             con = connection_create(socket);
             dynamic_array_append(srv->connections, &con);
+
+            printf("New client connected\n");
+            server_print_info(srv);
         }
 
         for (i = 0; i < srv->connections->len; i++) {
-            struct connection *con = cons[i];
+            struct connection *con;
+            cons = srv->connections->ptr;
+            con = cons[i];
             if (FD_ISSET(con->socket, &readfds)) {
-                char buf[4];
-                int j;
-                ssize_t count = read(con->socket, buf, sizeof(buf));
+                char *buf = con->buf->ptr;
+                ssize_t count;
+                size_t nbytes = BUFSIZE - con->buf->len;
+                char cmd[BUFSIZE];
+
+                if (nbytes == 0) {
+                    char *response = "Input buffer oveflow\n";
+                    if (write(con->socket, response, strlen(response)) == -1) {
+                        perror("write");
+                        close(con->socket);
+                        close(srv->socket);
+                        exit(1);
+                    }
+                    connection_close(srv, con);
+
+                    printf("Client disconnected\n");
+                    server_print_info(srv);
+
+                    continue;
+                }
+
+                count = read(con->socket, buf + con->buf->len, nbytes);
                 if (count == -1) {
                     perror("read");
                     close(con->socket);
@@ -108,24 +156,39 @@ void server_run(struct server *srv)
                 }
 
                 if (count == 0) {
-                    dynamic_array_remove(srv->connections, i);
-                    shutdown(con->socket, SHUT_RDWR);
-                    close(con->socket);
-                    connection_destroy(con);
+                    connection_close(srv, con);
+
+                    printf("Client disconnected\n");
+                    server_print_info(srv);
+
                     continue;
                 }
 
-                for (j = 0; j < count; j++) {
-                    if (buf[j] == '\n') {
-                        char *response = "Ok\n";
-                        if (write(con->socket, response, strlen(response)) == -1) {
-                            perror("write");
-                            close(con->socket);
-                            close(srv->socket);
-                            exit(1);
-                        }
-                        break;
+                con->buf->len += count;
+
+                while (!extract_cmd(con->buf, cmd)) {
+                    char response[32];
+
+                    if (match_cmd(cmd, "up")) {
+                        counter++;
+                        strcpy(response, "Ok\n");
+                    } else if (match_cmd(cmd, "down")) {
+                        counter--;
+                        strcpy(response, "Ok\n");
+                    } else if (match_cmd(cmd, "show")) {
+                        sprintf(response, "%ld\n", counter);
+                    } else {
+                        strcpy(response, "Unknown command\n");
                     }
+                    
+                    if (write(con->socket, response, strlen(response)) == -1) {
+                        perror("write");
+                        close(con->socket);
+                        close(srv->socket);
+                        exit(1);
+                    }
+
+                    printf("Command received: %s\n", cmd);
                 }
             }
         }

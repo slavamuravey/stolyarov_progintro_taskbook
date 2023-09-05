@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic
-SRCMODULES = dynamic_array.c connection.c server.c
+SRCMODULES = dynamic_array.c connection.c utils.c server.c
 OBJMODULES = $(SRCMODULES:.c=.o)
 PORT ?= 8181
 

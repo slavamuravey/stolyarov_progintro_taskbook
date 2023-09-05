@@ -6,7 +6,7 @@ struct connection *connection_create(int socket)
 {
     struct connection *con = malloc(sizeof(struct connection));
     con->socket = socket;
-    con->buf = dynamic_array_create(4096, sizeof(char));
+    con->buf = dynamic_array_create(BUFSIZE, sizeof(char));
 
     return con;
 }
