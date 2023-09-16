@@ -33,6 +33,8 @@
         "typeinfo": "c",
         "utility": "c",
         "server.h": "c",
-        "dynamic_array.h": "c"
+        "dynamic_array.h": "c",
+        "pthread.h": "c",
+        "semaphore.h": "c"
     }
 }
