@@ -35,6 +35,8 @@
         "server.h": "c",
         "dynamic_array.h": "c",
         "pthread.h": "c",
-        "semaphore.h": "c"
+        "semaphore.h": "c",
+        "cstdint": "c",
+        "sysmacros.h": "c"
     }
 }
