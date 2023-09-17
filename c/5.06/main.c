@@ -26,15 +26,13 @@ int main(int argc, char **argv)
     fd = open(filename, O_RDWR);
     if (fd == -1) {
         perror(filename);
-
-        return 1;
+        exit(EXIT_FAILURE);
     }
 
     key_number = strtoul(key, &endptr, 10);
     if (*endptr || key_number > UINT32_MAX || errno) {
         fprintf(stderr, "Invalid key\n");
-
-        return 1;
+        exit(EXIT_FAILURE);
     }
     
     int count;
