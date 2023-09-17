@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     }
 
     key_number = strtoul(key, &endptr, 10);
-    if (*endptr || key_number >= UINT_MAX) {
+    if (*endptr) {
         fprintf(stderr, "Invalid key\n");
 
         return 1;
