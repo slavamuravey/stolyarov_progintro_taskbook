@@ -37,6 +37,7 @@
         "pthread.h": "c",
         "semaphore.h": "c",
         "cstdint": "c",
-        "sysmacros.h": "c"
+        "sysmacros.h": "c",
+        "inttypes.h": "c"
     }
 }
