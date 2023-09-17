@@ -21,20 +21,22 @@ int main(int argc, char **argv)
     int fd;
     filename = argv[1];
     key = argv[2];
-    uint32_t key_number;
+    uint64_t key_number;
+
     fd = open(filename, O_RDWR);
     if (fd == -1) {
         perror(filename);
-        exit(EXIT_FAILURE);
-    }
-
-    key_number = strtoul(key, &endptr, 10);
-    if (*endptr) {
-        fprintf(stderr, "Invalid key\n");
 
         return 1;
     }
 
+    key_number = strtoul(key, &endptr, 10);
+    if (*endptr || key_number > UINT32_MAX || errno) {
+        fprintf(stderr, "Invalid key\n");
+
+        return 1;
+    }
+    
     int count;
     char buf[4096];
     while ((count = read(fd, buf, sizeof(buf))) != 0) {
