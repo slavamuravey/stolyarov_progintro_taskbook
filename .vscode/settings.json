@@ -38,6 +38,7 @@
         "semaphore.h": "c",
         "cstdint": "c",
         "sysmacros.h": "c",
-        "inttypes.h": "c"
+        "inttypes.h": "c",
+        "cstdlib": "c"
     }
 }
