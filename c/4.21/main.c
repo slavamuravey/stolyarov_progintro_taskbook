@@ -70,10 +70,6 @@ bool stackdbl_empty(struct stackdbl *stackdbl)
 int main(int argc, char **argv)
 {
     struct stackdbl *stackdbl = stackdbl_init();
-    if (stackdbl == NULL) {
-        printf("Can't create stack structure.\n");
-        exit(1);
-    }
 
     stackdbl_push(stackdbl, 1.23);
     stackdbl_push(stackdbl, 2.23);
