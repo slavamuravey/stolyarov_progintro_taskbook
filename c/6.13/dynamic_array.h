@@ -1,5 +1,5 @@
-#ifndef DYNAMIC_ARRAY_SENTRY
-#define DYNAMIC_ARRAY_SENTRY
+#ifndef DYNAMIC_ARRAY_H_SENTRY
+#define DYNAMIC_ARRAY_H_SENTRY
 
 #include <unistd.h>
 

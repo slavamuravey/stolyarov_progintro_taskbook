@@ -1,5 +1,5 @@
-#ifndef MY_STRING_SENTRY
-#define MY_STRING_SENTRY
+#ifndef MY_STRING_H_SENTRY
+#define MY_STRING_H_SENTRY
 
 #include <stdlib.h>
 

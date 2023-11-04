@@ -1,5 +1,5 @@
-#ifndef SERVER_SENTRY
-#define SERVER_SENTRY
+#ifndef SERVER_H_SENTRY
+#define SERVER_H_SENTRY
 
 #include <sys/socket.h>
 #include "dynamic_array.h"

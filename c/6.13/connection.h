@@ -1,5 +1,5 @@
-#ifndef CONNECTION_SENTRY
-#define CONNECTION_SENTRY
+#ifndef CONNECTION_H_SENTRY
+#define CONNECTION_H_SENTRY
 
 #include "dynamic_array.h"
 

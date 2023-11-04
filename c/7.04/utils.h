@@ -1,5 +1,5 @@
-#ifndef UTILS_SENTRY
-#define UTILS_SENTRY
+#ifndef UTILS_H_SENTRY
+#define UTILS_H_SENTRY
 
 #include <string.h>
 #include <stdbool.h>
