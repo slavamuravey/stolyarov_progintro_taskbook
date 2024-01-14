@@ -22,7 +22,7 @@ public:
 };
 
 class M {
-    int m[SIZE][SIZE];
+    mutable int m[SIZE][SIZE];
 public:
     M() {
         int i;
@@ -33,7 +33,7 @@ public:
         }
     }
 
-    int &operator[](const I &coord) {
+    int &operator[](const I &coord) const {
         return m[coord.Col() - 1][coord.Row() - 1];
     }
 
