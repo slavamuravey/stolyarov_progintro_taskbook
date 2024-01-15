@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <assert.h>
 
 #define SIZE 3
 
@@ -34,9 +33,9 @@ public:
     M operator+(M &m_add) const {
         M new_m;
         int i, j;
-        for (i = 1; i <= SIZE; i++) {
-            for (j = 1; j <= SIZE; j++) {
-                new_m[i][j] = m[i][j] + m_add[i][j];
+        for (i = 0; i < SIZE; i++) {
+            for (j = 0; j < SIZE; j++) {
+                new_m[i + 1][j + 1] = m[i][j] + m_add[i + 1][j + 1];
             }
         }
 
