@@ -3,9 +3,7 @@
 class B {
     int v;
 public:
-    B(int v) {
-        this->v = v;
-    }
+    B(int v): v(v) {}
 
     int operator+=(int addendum) {
         return v += addendum;

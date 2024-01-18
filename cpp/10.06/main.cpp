@@ -5,9 +5,7 @@ class E {
     class Row {
         int idx;
     public:
-        Row(const int idx) {
-            this->idx = idx;
-        }
+        Row(const int idx): idx(idx) {}
         int operator[](const int idx) const {
             return this->idx == idx ? 0 : this->idx - idx;
         }

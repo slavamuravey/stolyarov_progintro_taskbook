@@ -7,10 +7,7 @@ class I {
     unsigned int col;
     unsigned int row;
 public:
-    I(unsigned int col, unsigned int row) {
-        this->col = col;
-        this->row = row;
-    }
+    I(unsigned int col, unsigned int row): col(col), row(row) {}
 
     unsigned int Col() const {
         return col;

@@ -3,9 +3,8 @@
 class A {
     int n;
 public:
-    A(int n) {
-        this->n = n;
-    }
+    A(int n): n(n) {}
+    
     int operator[](int i) {
         return i + n;
     }

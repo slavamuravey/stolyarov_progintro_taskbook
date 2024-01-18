@@ -3,17 +3,11 @@
 class D {
     int v;
 public:
-    D() {
-        v = 0;
-    }
+    D(): v(0) {}
 
-    D(int i) {
-        v = i;
-    }
+    D(int i): v(i) {}
     
-    D(const D &o) {
-        v = o.Get() + 1;
-    }
+    D(const D &o): v(o.v + 1) {}
 
     int Get() const {
         return v;

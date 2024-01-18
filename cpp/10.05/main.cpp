@@ -8,9 +8,7 @@ class M {
     class Row {
         int *ptr;
     public:
-        Row(int *ptr) {
-            this->ptr = ptr;
-        }
+        Row(int *ptr): ptr(ptr) {}
 
         int &operator[](const unsigned int idx) const {
             return ptr[idx - 1];
