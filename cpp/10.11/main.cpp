@@ -2,7 +2,6 @@
 #include <math.h>
 
 class Body {
-protected:
     double density;
 public:
     Body(double density): density(density) {}
