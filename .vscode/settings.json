@@ -39,6 +39,7 @@
         "cstdint": "c",
         "sysmacros.h": "c",
         "inttypes.h": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "strings.h": "c"
     }
 }
