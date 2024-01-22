@@ -8,8 +8,8 @@ int main(int argc, char **argv)
     size_t wc;
     int is_word;
 
-    if (argc < 2) {
-        fprintf(stderr, "Too few arguments.\n");
+    if (argc != 2) {
+        fprintf(stderr, "Pass only one argument.\n");
         exit(1);
     }
 
