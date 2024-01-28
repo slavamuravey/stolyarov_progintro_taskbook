@@ -40,6 +40,7 @@
         "sysmacros.h": "c",
         "inttypes.h": "c",
         "cstdlib": "c",
-        "strings.h": "c"
+        "strings.h": "c",
+        "ncurses.h": "c"
     }
 }

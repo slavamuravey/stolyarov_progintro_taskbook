@@ -1,10 +1,12 @@
+LIBS ?=
+
 .PHONY: all
 all: clean main
 	@./main
 
 main: clean_main
 	@echo "+ $@"	
-	@gcc -Wall -g main.c -o main
+	@gcc -Wall -g main.c -o main $(LIBS)
 
 main.o: main.c
 	@echo "+ $@"
