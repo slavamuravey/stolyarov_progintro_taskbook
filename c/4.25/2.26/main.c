@@ -67,7 +67,6 @@ void scene_destroy(struct scene *s)
 {
     symbol_destroy(s->symbol);
     free(s);
-    endwin();
 }
 
 void run(struct scene *s)
@@ -86,7 +85,7 @@ void run(struct scene *s)
         do {
             usleep(DELAY);
             
-            new_x = symbol->x += step;
+            new_x = symbol->x + step;
             new_y = symbol->y;
 
             if (new_x == s->max_x - 1 || new_x == 0) {
@@ -111,6 +110,8 @@ int main(int argc, char **argv)
     scene = scene_create(max_x, max_y);
     run(scene);
     scene_destroy(scene);
+
+    endwin();
     
     return 0;
 }
