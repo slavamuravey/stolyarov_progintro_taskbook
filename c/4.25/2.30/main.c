@@ -94,7 +94,8 @@ void run(struct scene *s)
     int key;
     scene_render(s);
 
-    while (key = getch()) {
+    while (1) {
+        key = getch();
         switch (key) {
         case KEY_LEFT:
             if (s->area->width > 1) {
