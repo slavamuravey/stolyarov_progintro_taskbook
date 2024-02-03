@@ -21,7 +21,6 @@ struct area {
     struct scene *scene;
 };
 
-
 struct area *area_create(char c, int width, int height, struct scene *scene)
 {
     struct area *a;
